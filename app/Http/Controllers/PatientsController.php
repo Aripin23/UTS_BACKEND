@@ -13,9 +13,9 @@ class PatientsController extends Controller
     {
         //model
         $patients = new Patients();
-        // get all data
+        // ambil semua data
         $data = $patients::all();
-        // validation to empty data
+        // validasi data
         if ($data == null) {
             $response = [
                 'meta' => [
@@ -26,7 +26,7 @@ class PatientsController extends Controller
 
             return response()->json($response, 200);
         }
-        // success response
+        // respons
         $response = [
             'meta' => [
                 'code' => '200',
@@ -41,7 +41,7 @@ class PatientsController extends Controller
     {
         //model
         $patients = new Patients();
-        // get data by id
+        // ambil data sesuai id
         $data = $patients::where('id', $id)->first();
         // fail respinse
         if ($data == null) {
@@ -54,7 +54,7 @@ class PatientsController extends Controller
 
             return response()->json($response, 404);
         }
-        // success response
+        // sukses respon
         $response = [
             'meta' => [
                 'code' => '200',
@@ -70,7 +70,7 @@ class PatientsController extends Controller
     {
         // model
         $patients = new Patients();
-        // validation params
+        // validasi  parameter
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'phone' => 'required|numeric',
@@ -80,7 +80,7 @@ class PatientsController extends Controller
             'out_date' => 'required|date_format:Y-m-d'
         ]);
         
-        if ($validator->fails()) { // validation is fail
+        if ($validator->fails()) {
             $response = [
                 'meta' => [
                     'message' => $validator->errors()
@@ -89,9 +89,8 @@ class PatientsController extends Controller
 
             return response()->json($response);
         }
-        // check data with name
+        // cek data dengan nama
         $check = $patients::where('name', $request->name)->first();
-        // validation data to already exist
         if ($check != null) {
             $response = [
                 'meta' => [
@@ -101,7 +100,7 @@ class PatientsController extends Controller
 
             return response()->json($response);
         }
-        // save data to database
+        // format dimpan di database
         $patients->name = $request->name;
         $patients->phone = $request->phone;
         $patients->address = $request->address;
@@ -127,7 +126,7 @@ class PatientsController extends Controller
     {
         // model
         $patients = new Patients();
-        // validation params
+        // validasi parameter
         if ($request->phone != null || $request->in_date != null || $request->out_date != null) {
             $validator = Validator::make($request->all(), [
                 'phone' => 'numeric',
@@ -135,7 +134,7 @@ class PatientsController extends Controller
                 'out_date' => 'date_format:Y-m-d'
             ]);
     
-            if ($validator->fails()) { // validation is fail
+            if ($validator->fails()) {
                 $response = [
                     'meta' => [
                         'message' => $validator->errors()
@@ -148,7 +147,6 @@ class PatientsController extends Controller
 
         // update data
         $doChange = $patients::where('id', $id)->first();
-        // validation reasouce not found
         if ($doChange == null) {
             $response = [
                 'meta' => [
@@ -170,7 +168,7 @@ class PatientsController extends Controller
         $doChange->update();
 
         
-        // success reponse
+        // sukses respon
         $response = [
             'meta' => [
                 'code' => '200',
@@ -187,7 +185,6 @@ class PatientsController extends Controller
         $patients = new Patients();
 
         $destroy = $patients::where('id', $id)->first();
-        // validation resource not found
         if ($destroy == null) {
             $response = [
                 'meta' => [
@@ -214,7 +211,7 @@ class PatientsController extends Controller
     {
         // model
         $patients = new Patients();
-        // search data bu name
+        // cari data dengan nama
         $search = $patients::where('name', 'like', '%' . $name . '%')->get();
         // validation to data not found
         if (count($search) == 0) {
@@ -242,9 +239,8 @@ class PatientsController extends Controller
     {
         // model
         $patients = new Patients();
-        // get data positive
+        // ambil data yang positive
         $data = $patients::where('status', 'positive')->get();
-        // validation to data not found
         if (count($data) == 0) {
             $response = [
                 'meta' => [
@@ -255,7 +251,6 @@ class PatientsController extends Controller
 
             return response()->json($response, 404);
         }
-        // success response
         $response = [
             'meta' => [
                 'code' => '200',
@@ -272,9 +267,9 @@ class PatientsController extends Controller
     {
         // model
         $patients = new Patients();
-        // get data recovered
+        // ambil data yang sembuh
         $data = $patients::where('status', 'recovered')->get();
-        // validation to data not found
+
         if (count($data) == 0) {
             $response = [
                 'meta' => [
@@ -285,7 +280,7 @@ class PatientsController extends Controller
 
             return response()->json($response, 404);
         }
-        // success response
+
         $response = [
             'meta' => [
                 'code' => '200',
@@ -302,9 +297,9 @@ class PatientsController extends Controller
     {
         // model
         $patients = new Patients();
-        // get data dead
+        // ambil data yang meninggal
         $data = $patients::where('status', 'dead')->get();
-        // validation to data not found
+
         if (count($data) == 0) {
             $response = [
                 'meta' => [
@@ -315,7 +310,7 @@ class PatientsController extends Controller
 
             return response()->json($response, 404);
         }
-        // success response
+        // respon sukses
         $response = [
             'meta' => [
                 'code' => '200',
